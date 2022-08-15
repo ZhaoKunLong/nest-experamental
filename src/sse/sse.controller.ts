@@ -15,11 +15,9 @@ export class SseController {
 
   @Get('add-event/:id')
   helloSse(@Param('id') id: string) {
-    setInterval(() => {
-      this.sseService.emit(id, {
-        hello: `this is added by get and from sse reply for ${id}`,
-      });
-    }, 5 * 1000);
+    this.sseService.emit(id, {
+      hello: `this is added by get and from sse reply for ${id}`,
+    });
 
     return 'hello sse!';
   }

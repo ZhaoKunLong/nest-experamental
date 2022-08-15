@@ -1,4 +1,4 @@
-import { Controller, Get, Res } from '@nestjs/common';
+import { Controller, Get, Param, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Response } from 'express';
 import { readFileSync } from 'fs';
@@ -8,11 +8,11 @@ import { join } from 'path';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  index(@Res() response: Response) {
+  @Get(':role')
+  index(@Param('role') role: string, @Res() response: Response) {
     response
       .type('text/html')
-      .send(readFileSync(join(__dirname, 'see.html')).toString());
+      .send(readFileSync(join(__dirname, `${role}.html`)).toString());
   }
 
   @Get('hello')

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>See event</title>
+</head>
+
+<body>
+  <p>Hello this a see event. usually using in the notifications</p>
+  <p>试验目的：当 用户在线（3分钟后）时候，通过BE自动向 用户推送一条/几条 他们的reminder message
+     每天的凌晨1点钟，会把所有用户的的 reminder 查询一遍，然后，查看是否是在生效期间内。如果当天在用户设置的生效期间内，就push 到 bull queue 中，按照1分钟间隔 发送一封email给所有当天设置提醒的用户。 通过 set message  将提醒消息放到message中 
+
+     期望目标： 当用户上线 10分钟后。链接上sse.  sse将他当天的提醒推送到用户
+  </p>
+   
+</body>
+<script>
+  const eventSource = new EventSource('sse/sse?userId=template')
+
+  /* This will listen only for events
+   * similar to the following:
+   *
+   * event: notice
+   * data: useful data
+   * id: someid
+   *
+   */
+  eventSource.addEventListener("notice", function (e) {
+    const content = `
+    <p>New activity: ${e.data.hello}</p>
+    ${e.data.reminder.map((li)=>`<li>${li}</li>`)}
+    `
+    const messageData = document.createElement('div');
+    messageData.innerHTML=content
+    document.body.appendChild(messageData); 
+
+    console.log(e.data)
+  })
+
+  /* Similarly, this will listen for events
+   * with the field `event: update`
+   */
+  // eventSource.addEventListener("update", function (e) {
+  //   console.log(e.data)
+  // })
+
+  /* The event "message" is a special case, as it
+   * will capture events without an event field
+   * as well as events that have the specific type
+   * `event: message` It will not trigger on any
+   * other event type.
+   */
+  // eventSource.addEventListener("message", function (e) {
+  //   console.log(e.data)
+  // })
+
+  // eventSource.onmessage = (msg) => {
+  //   const message = document.createElement('p')
+  //   message.innerText = `${console.dir(msg)}`
+  //   document.body.appendChild(message);
+  // }
+</script>
+
+</html>

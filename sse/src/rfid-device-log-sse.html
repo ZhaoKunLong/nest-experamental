@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>See event</title>
+</head>
+
+<body>
+  <p>Hello this a see event. usually using in the notifications</p>
+  <p>试验目的：当有人打开页面后，和页面链接，实时监听 有没有tag 从设备旁边经过
+  </p>
+  <button id="disconnect">disconnect</button>
+
+</body>
+<script>
+  // 开始监听
+  const eventSource = new EventSource('http://localhost:3000/sse/0826AE1801A6')
+
+  /* This will listen only for events
+   * similar to the following:
+   *
+   * event: notice
+   * data: useful data
+   * id: someid
+   *
+   */
+  eventSource.addEventListener("tagRead", function (e) {
+    const data = JSON.parse(e.data)
+    const content = `
+    <p>New activity:</p>
+    ${data.map((li) => `<li>${li.epc}</li>`)}
+    `
+    const messageData = document.createElement('div');
+    messageData.innerHTML = content
+    document.body.appendChild(messageData);
+
+    console.log(data)
+  })
+
+
+  const disconnect = document.getElementById('disconnect')
+  disconnect.addEventListener("click", function (e) {
+    eventSource.close()
+    alert('disconnect')
+  })
+
+  /* Similarly, this will listen for events
+   * with the field `event: update`
+   */
+  // eventSource.addEventListener("update", function (e) {
+  //   console.log(e.data)
+  // })
+
+  /* The event "message" is a special case, as it
+   * will capture events without an event field
+   * as well as events that have the specific type
+   * `event: message` It will not trigger on any
+   * other event type.
+   */
+  // eventSource.addEventListener("message", function (e) {
+  //   console.log(e.data)
+  // })
+
+  // eventSource.onmessage = (msg) => {
+  //   const message = document.createElement('p')
+  //   message.innerText = `${console.dir(msg)}`
+  //   document.body.appendChild(message);
+  // }
+</script>
+
+</html>

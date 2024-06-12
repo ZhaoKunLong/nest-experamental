@@ -13,5 +13,6 @@ import { EMAIL_DELAY_TASKS, OTHER_TASKS } from 'constant';
   ],
   controllers: [QueueJobCreatorController],
   providers: [QueueJobCreatorService],
+  exports: [QueueJobCreatorService],
 })
 export class QueueJobCreatorModule {}

@@ -10,7 +10,7 @@ export class QueueJobCreatorService {
     private emailDelayQueue: Queue,
   ) {}
 
-  async createJob(data: Record<string, any>): Promise<void> {
+  async addToQueue(data: Record<string, any>): Promise<void> {
     await this.emailDelayQueue.add(
       EMAIL_DELAY_QUEUE.DELAY_RESUME_EMAIL_30_MINUTES,
       data,

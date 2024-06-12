@@ -7,6 +7,6 @@ export class QueueJobCreatorController {
 
   @Post()
   async createJob(@Body() data: Record<string, any>): Promise<void> {
-    return this.queueJobCreatorService.createJob(data);
+    return this.queueJobCreatorService.addToQueue(data);
   }
 }

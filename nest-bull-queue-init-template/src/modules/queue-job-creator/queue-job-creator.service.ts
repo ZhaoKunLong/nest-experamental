@@ -13,10 +13,8 @@ export class QueueJobCreatorService {
   async createJob(data: Record<string, any>): Promise<void> {
     await this.emailDelayQueue.add(
       EMAIL_DELAY_QUEUE.DELAY_RESUME_EMAIL_30_MINUTES,
-      {
-        data,
-      },
-      { delay: 1 * 60 * 1000 },
+      data,
+      { delay: 1 * 60 * 1000, removeOnComplete: true },
     );
   }
 }

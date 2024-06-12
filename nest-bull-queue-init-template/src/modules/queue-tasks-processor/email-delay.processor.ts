@@ -7,8 +7,8 @@ export class EmailDelayProcessor {
   constructor() {}
 
   @Process(EMAIL_DELAY_QUEUE.DELAY_RESUME_EMAIL_30_MINUTES)
-  async handleDelayResumeEmail(job: Job): Promise<void> {
+  async handleDelayResumeEmail({ data }: Job): Promise<void> {
     console.log(`execute the job`);
-    console.log(job);
+    console.log(data);
   }
 }

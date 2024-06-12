@@ -10,7 +10,7 @@ import { QueueJobCreatorModule } from './modules/queue-job-creator/queue-job-cre
     QueueTasksProcessorModule,
     BullModule.forRoot({
       redis: 'redis://localhost:6379',
-      prefix: 'queue-tasks:',
+      prefix: 'queue-tasks:nest-template',
     }),
     QueueJobCreatorModule,
   ],
